@@ -4,8 +4,18 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { jwtConfig } from "../config/jwtConfig";
 
+interface RegisterOutput {
+  id: string;
+  name: string;
+  email: string;
+}
+
+interface LoginOutput {
+  token: string;
+}
+
 export class AuthService {
-  async register(data: RegisterInput) {
+  async register(data: RegisterInput): Promise<RegisterOutput> {
     const userExists = await prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -21,8 +31,6 @@ export class AuthService {
       },
     });
 
-    console.log("[AUTH SERVICE] Usuário criado:", user);
-
     return {
       id: user.id,
       name: user.name,
@@ -30,13 +38,11 @@ export class AuthService {
     };
   }
 
-  async login(data: LoginInput) {
+  async login(data: LoginInput): Promise<LoginOutput> {
     const user = await prisma.user.findUnique({ where: { email: data.email } });
-    console.log("[AUTH SERVICE] Usuário encontrado:", user);
     if (!user) throw new Error("Invalid credentials");
 
     const passwordValid = await bcrypt.compare(data.password, user.password);
-    console.log("[AUTH SERVICE] Senha válida:", passwordValid);
     if (!passwordValid) throw new Error("Invalid credentials");
 
     const token = jwt.sign(

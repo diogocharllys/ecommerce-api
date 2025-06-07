@@ -6,7 +6,7 @@ import {
 } from "../validators/products.validator";
 
 export const productController = {
-  async index(req: Request, res: Response) {
+  async index(req: Request, res: Response): Promise<void> {
     const products = await productService.findAll();
     res.json(products);
   },
@@ -42,7 +42,7 @@ export const productController = {
     res.json(product);
   },
 
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response): Promise<void> {
     await productService.delete(req.params.id);
     res.status(204).send();
   },

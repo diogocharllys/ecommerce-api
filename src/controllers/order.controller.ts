@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { orderService } from "../services/order.service";
 
 export const orderController = {
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?.id;
       const order = await orderService.createFromCart(userId as string);
@@ -14,13 +14,13 @@ export const orderController = {
     }
   },
 
-  async list(req: Request, res: Response) {
+  async list(req: Request, res: Response): Promise<void> {
     const userId = req.user?.id;
     const orders = await orderService.listByUser(userId as string);
     res.json(orders);
   },
 
-  async detail(req: Request, res: Response) {
+  async detail(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?.id;
       const order = await orderService.getById(userId as string, req.params.id);
@@ -32,7 +32,7 @@ export const orderController = {
     }
   },
 
-  async pay(req: Request, res: Response) {
+  async pay(req: Request, res: Response): Promise<void> {
     try {
       const userId = req.user?.id;
       const order = await orderService.pay(userId as string, req.params.id);

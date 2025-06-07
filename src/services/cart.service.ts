@@ -1,23 +1,24 @@
 import { prisma } from "../lib/prisma";
+import { Cart, CartItem, Product } from "@prisma/client";
 
 export const cartService = {
-  async getOrCreateCart(userId: string) {
-    console.log("[CART SERVICE] getOrCreateCart userId:", userId);
+  async getOrCreateCart(userId: string): Promise<Cart | null> {
     let cart = await prisma.cart.findFirst({ where: { userId } });
-    console.log("[CART SERVICE] Cart encontrado:", cart);
     if (!cart) {
       try {
         cart = await prisma.cart.create({ data: { userId } });
-        console.log("[CART SERVICE] Cart criado:", cart);
       } catch (err) {
-        console.error("[CART SERVICE] Erro ao criar cart:", err);
+        console.error(err);
       }
     }
     return cart;
   },
 
-  async getCartWithItems(userId: string) {
-    console.log("[CART SERVICE] getCartWithItems userId:", userId);
+  async getCartWithItems(
+    userId: string
+  ): Promise<
+    (Cart & { cartItems: (CartItem & { product: Product })[] }) | null
+  > {
     const cart = await prisma.cart.findFirst({
       where: { userId },
       include: {
@@ -28,7 +29,6 @@ export const cartService = {
         },
       },
     });
-    console.log("[CART SERVICE] Cart retornado em getCartWithItems:", cart);
     return cart;
   },
 
@@ -36,17 +36,8 @@ export const cartService = {
     userId: string,
     productId: string,
     quantity: number
-  ): Promise<unknown> {
-    console.log(
-      "[CART SERVICE] addItem userId:",
-      userId,
-      "productId:",
-      productId,
-      "quantity:",
-      quantity
-    );
+  ): Promise<CartItem & { product: Product }> {
     const cart = await cartService.getOrCreateCart(userId);
-    console.log("[CART SERVICE] Cart retornado em addItem:", cart);
 
     if (!cart) {
       throw new Error("Cart not found");
@@ -76,7 +67,6 @@ export const cartService = {
           product: true,
         },
       });
-      console.log("[CART SERVICE] CartItem atualizado:", updated);
       return updated;
     } else {
       const created = await prisma.cartItem.create({
@@ -89,12 +79,15 @@ export const cartService = {
           product: true,
         },
       });
-      console.log("[CART SERVICE] CartItem criado:", created);
       return created;
     }
   },
 
-  async updateItem(userId: string, productId: string, quantity: number) {
+  async updateItem(
+    userId: string,
+    productId: string,
+    quantity: number
+  ): Promise<CartItem> {
     const cart = await prisma.cart.findFirst({ where: { userId } });
     if (!cart) throw new Error("Cart not found");
 
@@ -109,7 +102,7 @@ export const cartService = {
     });
   },
 
-  async removeItem(userId: string, productId: string) {
+  async removeItem(userId: string, productId: string): Promise<CartItem> {
     const cart = await prisma.cart.findFirst({ where: { userId } });
     if (!cart) throw new Error("Cart not found");
 

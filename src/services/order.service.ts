@@ -1,17 +1,16 @@
 import { prisma } from "../lib/prisma";
+import { Order, OrderItem, Cart, CartItem, Product } from "@prisma/client";
 
 export const orderService = {
-  async createFromCart(userId: string) {
-    console.log("[ORDER SERVICE] userId recebido:", userId);
-    const allCarts = await prisma.cart.findMany();
-    console.log("[ORDER SERVICE] Todos os carts:", allCarts);
+  async createFromCart(
+    userId: string
+  ): Promise<Order & { items: (OrderItem & { product: Product })[] }> {
     const cart = await prisma.cart.findFirst({
       where: { userId },
       include: {
         cartItems: { include: { product: true } },
       },
     });
-    console.log("[ORDER SERVICE] Carrinho encontrado:", cart);
 
     if (!cart || cart.cartItems.length === 0) {
       throw new Error("Empty cart");
@@ -54,7 +53,9 @@ export const orderService = {
     return order;
   },
 
-  async listByUser(userId: string) {
+  async listByUser(
+    userId: string
+  ): Promise<(Order & { items: (OrderItem & { product: Product })[] })[]> {
     return prisma.order.findMany({
       where: { userId },
       include: {
@@ -64,7 +65,10 @@ export const orderService = {
     });
   },
 
-  async getById(userId: string, orderId: string) {
+  async getById(
+    userId: string,
+    orderId: string
+  ): Promise<Order & { items: (OrderItem & { product: Product })[] }> {
     const order = await prisma.order.findUnique({
       where: { id: orderId },
       include: {
@@ -79,7 +83,10 @@ export const orderService = {
     return order;
   },
 
-  async pay(userId: string, orderId: string) {
+  async pay(
+    userId: string,
+    orderId: string
+  ): Promise<Order & { items: (OrderItem & { product: Product })[] }> {
     const order = await prisma.order.findUnique({
       where: { id: orderId },
     });
