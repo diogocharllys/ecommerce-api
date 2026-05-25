@@ -27,6 +27,12 @@ beforeAll(async () => {
     });
 
   productId = productRes.body.id;
+
+  // O pedido é criado a partir do carrinho, então adicionamos o produto antes.
+  await request(app)
+    .post('/cart/items')
+    .set('Authorization', `Bearer ${token}`)
+    .send({ productId, quantity: 2 });
 });
 
 describe('Orders', () => {
