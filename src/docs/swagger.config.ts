@@ -19,5 +19,6 @@ export const swaggerConfig = swaggerJSDoc({
     },
     security: [{ bearerAuth: [] }],
   },
-  apis: ["src/routes/*.ts"],
+  // src/*.ts em desenvolvimento, dist/*.js em produção (o container só tem dist/)
+  apis: ["src/routes/*.ts", "dist/routes/*.js"],
 });

@@ -6,6 +6,9 @@ COPY package*.json ./
 RUN npm install
 
 COPY . .
+
+# Gera o Prisma Client antes do tsc — os tipos dependem disto
+RUN npx prisma generate --schema=src/prisma/schema.prisma
 RUN npm run build
 
 FROM node:20-alpine
@@ -23,4 +26,6 @@ RUN npx prisma generate
 ENV NODE_ENV=production
 
 EXPOSE 3000
-CMD ["node", "dist/server.js"]
+
+# Sincroniza o schema do banco antes de iniciar (cria as tabelas no primeiro deploy)
+CMD ["sh", "-c", "npx prisma db push --skip-generate && node dist/server.js"]
