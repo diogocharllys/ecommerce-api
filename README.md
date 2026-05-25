@@ -5,6 +5,10 @@
 </p>
 
 <p align="center">
+  <a href="https://ecommerce-api-production-2aed.up.railway.app/docs/"><img src="https://img.shields.io/badge/🔗_Live_Demo-Swagger-009688?style=for-the-badge" alt="Live Demo"/></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white" alt="Node"/>
   <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript"/>
   <img src="https://img.shields.io/badge/Express-000000?logo=express&logoColor=white" alt="Express"/>
@@ -13,6 +17,9 @@
   <img src="https://img.shields.io/badge/Jest-C21325?logo=jest&logoColor=white" alt="Jest"/>
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License"/>
 </p>
+
+> 🔗 **Demo ao vivo:** documentação interativa (Swagger) em
+> **https://ecommerce-api-production-2aed.up.railway.app/docs/**
 
 ---
 
@@ -72,7 +79,7 @@ O carrinho (`Cart`/`CartItem`) é convertido em pedido (`Order`/`OrderItem`) no 
 
 ## 🔌 Endpoints
 
-> Base URL local: `http://localhost:3000` · Auth via header `Authorization: Bearer <token>`
+> Base URL local: `http://localhost:3000` · Demo: `https://ecommerce-api-production-2aed.up.railway.app` · Auth via header `Authorization: Bearer <token>`
 
 ### Autenticação
 | Método | Rota | Descrição |
