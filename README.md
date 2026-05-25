@@ -9,6 +9,10 @@
 </p>
 
 <p align="center">
+  <a href="https://github.com/diogocharllys/ecommerce-api/actions/workflows/ci.yml"><img src="https://github.com/diogocharllys/ecommerce-api/actions/workflows/ci.yml/badge.svg" alt="CI"/></a>
+</p>
+
+<p align="center">
   <img src="https://img.shields.io/badge/Node.js-339933?logo=node.js&logoColor=white" alt="Node"/>
   <img src="https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white" alt="TypeScript"/>
   <img src="https://img.shields.io/badge/Express-000000?logo=express&logoColor=white" alt="Express"/>
